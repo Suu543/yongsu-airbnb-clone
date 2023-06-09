@@ -44,7 +44,6 @@ const Modal: React.FC<ModalProps> = ({
 
     setShowModal(false);
 
-    // 0.3s Animation을 추가해야하기 때문에 다음과 같이 정의
     setTimeout(() => {
       onClose();
     }, 300);
