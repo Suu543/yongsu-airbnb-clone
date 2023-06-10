@@ -11,6 +11,7 @@ interface CategoryBoxProps {
   selected?: boolean;
 }
 
+// 똑같은 카테고리를 두번클릭하면 홈페이지로 리다이렉트
 const CategoryBox: React.FC<CategoryBoxProps> = ({
   icon: Icon,
   label,
