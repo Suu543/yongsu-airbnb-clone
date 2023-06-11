@@ -10,6 +10,7 @@ import CategoryInput from "../inputs/CategoryInput";
 import { useForm, FieldValues } from "react-hook-form";
 import CountrySelect from "../inputs/CountrySelect";
 import dynamic from "next/dynamic";
+import Counter from "../inputs/Counter";
 
 // 순서대로 선택 할 요소를 만들어야하기 때문에
 enum STEPS {
@@ -51,7 +52,11 @@ const RentModal = () => {
   // Watch and subscribe to the entire form update/change based on onChange and re-render at the useForm.
   const category = watch("category");
   const location = watch("location");
+  const guestCount = watch("guestCount");
+  const roomCount = watch("roomCount");
+  const bathroomCount = watch("bathroomCount");
 
+  // Map 컴포넌트가 불러지는 데 시간이 걸리기 때문에
   const Map = useMemo(
     () => dynamic(() => import("../Map"), { ssr: false }),
     [location]
@@ -128,9 +133,38 @@ const RentModal = () => {
         <Map center={location?.latlng} />
       </div>
     );
-    }
-    
-    
+  }
+
+  if (step === STEPS.INFO) {
+    bodyContent = (
+      <div className="flex flex-col gap-8">
+        <Heading
+          title="Share some basics about your place"
+          subtitle="What amenities do you have?"
+        />
+        <Counter
+          title="Number of guests"
+          subtitle="How many guests"
+          value={guestCount}
+          onChange={(value) => setCustomValue("guestCount", value)}
+        />
+        <hr />
+        <Counter
+          title="Rooms"
+          subtitle="How many rooms do you have"
+          value={roomCount}
+          onChange={(value) => setCustomValue("roomCount", value)}
+        />
+        <hr />
+        <Counter
+          title="Bathrooms"
+          subtitle="How many bathrooms do you have"
+          value={bathroomCount}
+          onChange={(value) => setCustomValue("bathroomCount", value)}
+        />
+      </div>
+    );
+  }
 
   return (
     <Modal
