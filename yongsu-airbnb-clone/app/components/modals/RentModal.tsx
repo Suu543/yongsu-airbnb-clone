@@ -11,6 +11,7 @@ import { useForm, FieldValues } from "react-hook-form";
 import CountrySelect from "../inputs/CountrySelect";
 import dynamic from "next/dynamic";
 import Counter from "../inputs/Counter";
+import ImageUpload from "../inputs/ImageUpload";
 
 // 순서대로 선택 할 요소를 만들어야하기 때문에
 enum STEPS {
@@ -55,6 +56,7 @@ const RentModal = () => {
   const guestCount = watch("guestCount");
   const roomCount = watch("roomCount");
   const bathroomCount = watch("bathroomCount");
+  const imageSrc = watch("imageSrc");
 
   // Map 컴포넌트가 불러지는 데 시간이 걸리기 때문에
   const Map = useMemo(
@@ -166,6 +168,21 @@ const RentModal = () => {
     );
   }
 
+  if (step === STEPS.IMAGES) {
+    bodyContent = (
+      <div className="flex flex-col gap-8">
+        <Heading
+          title="Add a photo of your place"
+          subtitle="Show guests what your place looks lie!"
+        />
+        <ImageUpload
+          value={imageSrc}
+          onChange={(value) => setCustomValue("imageSrc", value)}
+        />
+      </div>
+    );
+  }
+
   return (
     <Modal
       isOpen={rentModal.isOpen}
@@ -188,3 +205,9 @@ export default RentModal;
 // shouldDirty: 값이 변경되었음을 나타내는 불리언 값입니다. 마찬가지로 폼 라이브러리에서 사용되며, true로 설정되면 해당 필드가 "더티(dirty)" 상태로 표시됩니다. 이는 사용자가 해당 필드를 수정했음을 나타냅니다.
 // shouldTouch: 사용자가 필드에 대해 상호 작용했는지 여부를 나타내는 불리언 값입니다. true로 설정되면 해당 필드가 "터치(touch)" 상태로 표시됩니다. 이는 사용자가 해당 필드에 대해 포커스를 가져와서 입력을 시작했음을 나타냅니다.
 // 따라서 setCustomValue 함수를 호출하면 setValue 함수가 호출되어 주어진 id와 value로 값을 설정하고, 해당 필드를 유효성 검사, 더티 상태로 표시하고, 터치 상태로 표시합니다.
+
+// dynamic(() => import("../Map"), { ssr: false }) 코드는 코드 스플리팅(Code Splitting)을 위해 사용됩니다.
+// 일반적으로 React 애플리케이션은 모든 컴포넌트를 처음에 한 번에 불러와서 렌더링합니다. 하지만 애플리케이션 규모가 커지고 컴포넌트의 수가 많아지면 초기 로딩 시간이 길어질 수 있습니다.
+// 코드 스플리팅은 애플리케이션을 여러 개의 작은 번들(chunk)로 분할하여 필요한 컴포넌트만 필요한 시점에 동적으로 불러오는 기술입니다. 이를 통해 초기 로딩 시간을 줄이고, 필요하지 않은 컴포넌트의 로드를 지연시킬 수 있습니다.
+// dynamic(() => import("../Map"), { ssr: false }) 코드는 Next.js에서 제공하는 dynamic 함수를 사용하여 Map 컴포넌트를 동적으로 불러옵니다. import("../Map")는 Map 컴포넌트를 동적으로 불러오는 함수입니다. { ssr: false }는 서버 사이드 렌더링(SSR)을 사용하지 않도록 설정하는 옵션입니다.
+// 이를 통해 Map 컴포넌트는 초기 로딩 시에는 포함되지 않고, 해당 컴포넌트가 필요한 시점에 비동기적으로 불러와집니다. 이는 애플리케이션의 성능을 향상시키고 초기 로딩 시간을 줄여줄 수 있습니다.
