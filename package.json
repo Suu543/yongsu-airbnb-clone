@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "date-fns": "^2.30.0",
     "leaflet": "^1.9.4",
     "query-string": "^8.1.0",
     "react-leaflet": "^4.2.1",
