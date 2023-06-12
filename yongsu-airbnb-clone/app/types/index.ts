@@ -1,3 +1,5 @@
+// Warning: Only plain objects can be passed to Client Components from Server Components. Date objects are not supported.
+
 import { Listing, Reservation, User } from "@prisma/client";
 
 export type SafeListing = Omit<Listing, "createdAt"> & {
