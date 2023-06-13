@@ -36,7 +36,11 @@ const RegisterModal = () => {
 
     axios
       .post("/api/register", data)
-      .then(() => registerModal.onClose())
+      .then(() => {
+        toast.success("Success!");
+        registerModal.onClose();
+        loginModal.onOpen();
+      })
       .catch((error) => toast.error("something went wrong"))
       .finally(() => {
         setIsLoading(false);
@@ -94,23 +98,12 @@ const RegisterModal = () => {
         icon={AiFillGithub}
         onClick={() => signIn("github")}
       />
-      <div
-        className="
-          text-neutral-500 
-          text-center 
-          mt-4 
-          font-light
-        "
-      >
+      <div className="mt-4 font-light text-center text-neutral-500">
         <p>
           Already have an account?
           <span
             onClick={onToggle}
-            className="
-              text-neutral-800
-              cursor-pointer 
-              hover:underline
-            "
+            className="cursor-pointer text-neutral-800 hover:underline"
           >
             {" "}
             Log in
