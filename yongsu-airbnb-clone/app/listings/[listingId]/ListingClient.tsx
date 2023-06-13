@@ -1,6 +1,5 @@
 "use client";
 
-import { Reservation } from "@prisma/client";
 // differenceInDays (현재 시간을 기준으로 측정을하기 때문에 wrong total price를 출력할 수 있음) vs differenceInCalendarDays:
 import {
   differenceInCalendarDays,
@@ -13,7 +12,7 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 import { Range } from "react-date-range";
 
-import { SafeListing, SafeUser } from "@/app/types";
+import { SafeListing, SafeReservation, SafeUser } from "@/app/types";
 import { categories } from "@/app/components/navbar/Categories";
 import Container from "@/app/components/Container";
 import ListingHead from "@/app/components/listings/ListingHead";
@@ -28,7 +27,7 @@ const initialDateRange = {
 };
 
 interface ListingClientProps {
-  reservations?: Reservation[];
+  reservations?: SafeReservation[];
   listing: SafeListing & {
     user: SafeUser;
   };
@@ -81,7 +80,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
         toast.success("Listing reserved!");
         setDateRange(initialDateRange);
         // Redirect to /trips
-        router.refresh();
+        router.push("/trips");
       })
       .catch(() => {
         toast.error("Something went wrong");
